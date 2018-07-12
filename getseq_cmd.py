@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 
 import argparse
 import json
@@ -120,10 +120,10 @@ class EnsemblRestClient():
 
             if bed:
                 reads = pd.read_csv(bed, sep='\t', usecols=[
-                    0, 1, 2], header=None)
+                    0, 1, 2, 3, 4, 5], header=None)
 
             else:
-                reads = pd.read_csv(sys.stdin, header=None, usecols=[0, 1, 2],
+                reads = pd.read_csv(sys.stdin, header=None, usecols=[0, 1, 2, 3, 4, 5],
                                     delim_whitespace=True)
 
             start_cell = reads.iloc[0][1]
@@ -148,10 +148,10 @@ class EnsemblRestClient():
         # respect the API limitation of 50 regions per request
         regions = {}
 
-        reads.columns = ['chrom', 'start', 'end']
+        reads.columns = ['chrom', 'start', 'end', 'name', 'score', 'strand']
 
         logging.info('\n Printing top 10 input regions ... \n')
-        logging.info(reads.iloc[:10, :3])
+        logging.info(reads.iloc[:10, :6])
 
         if reads['chrom'].astype(str).str.contains('chr', na=False).any():
             # change 'chrM' to 'MT' and remove the 'chr' prefix
