@@ -191,6 +191,8 @@ def retrieve_seq(args):
 
     # save the sequences to output file
     if sequences:
+        for s in sequences:
+            s['id'] = str(s['id']).replace('chromosome', args.species)
         if args.output:
             # write results to output
             with open(args.output, "w") as f:
