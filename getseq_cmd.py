@@ -162,8 +162,10 @@ class EnsemblRestClient():
 
         pd.options.mode.chained_assignment = None
         for k, subreads in reads.groupby(np.arange(len(reads)) // 50):
+            subreads['strand'] = subreads['strand'].str.replace('+', '1')
+            subreads['strand'] = subreads['strand'].str.replace('-', '-1')
             subreads['region'] = subreads['chrom'].astype(
-                str) + ':' + subreads['start'].astype(str) + '..' + subreads['end'].astype(str)
+                str) + ':' + subreads['start'].astype(str) + '..' + subreads['end'].astype(str) + ':' + subreads['strand']
 
             regions.update(
                 {subreads.iloc[0]['region']: subreads['region'].tolist()})
